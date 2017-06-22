@@ -24,16 +24,31 @@ public class Main {
 
         do {//ходим, пока не будет победителя
             if (player_number == 1 & turn.equals("Player 1")) //выбран режим для одного игрока и компьютера, ходит игрок 1
-                single_player1_move();
+                try {
+                    single_player1_move();
+                } catch (java.util.InputMismatchException e) {
+                    System.out.println("Please make correct choice: 1 to 9.");
+                    single_player1_move();
+                }
 
             else if (player_number == 1 & turn.equals("Computer")) //выбран режим для одного игрока и компьютера, ходит компьютер
                 single_comp_move();
 
             else if (player_number == 2 & turn.equals("Player 1")) //выбран режим для двух игроков, ходит игрок 1
-                multi_player1_move();
+                try {
+                    multi_player1_move();
+                } catch (java.util.InputMismatchException e) {
+                    System.out.println("Please make correct choice: 1 to 9.");
+                    multi_player1_move();
+                }
 
             else //выбран режим для двух игроков, ходит игрок 2
-                multi_player2_move();
+                try {
+                    multi_player2_move();
+                } catch (java.util.InputMismatchException e) {
+                    System.out.println("Please make correct choice: 1 to 9.");
+                    multi_player2_move();
+                }
 
             fieldPrint();//выводим наше поле после хода
             System.out.println(turn + "'s turn");
@@ -49,7 +64,7 @@ public class Main {
             System.out.print("Please enter correct value: 1 or 2.");
             numberOfPlayersChecker();
         }
-        if (player_number < 1 || player_number > 9) {
+        if (player_number < 1 || player_number > 2) {
             System.out.print("Please enter correct value: 1 or 2.");
             numberOfPlayersChecker();
         }
@@ -58,18 +73,14 @@ public class Main {
 
     public static void single_player1_move() {
         System.out.print("Please choose field 1 to 9 to put 'X': ");
-        try {
-            step_player1 = new Scanner(System.in).nextInt();
-        } catch (java.util.InputMismatchException e) {
+        step_player1 = new Scanner(System.in).nextInt();
+        if (step_player1 > 0 && step_player1 < 10) {
+            makeMove(step_player1);
+            turn = "Computer";
+        } else {
             System.out.println("Please make correct choice: 1 to 9.");
             single_player1_move();
         }
-        if (step_player1 < 1 || step_player1 > 9) {
-            System.out.println("Please make correct choice: 1 to 9.");
-            single_player1_move();
-        }//ввод номера ячейки для вставки 'X'
-        makeMove(step_player1);//ход игрока №1
-        turn = "Computer";
     }
 
     public static void single_comp_move() {
@@ -80,35 +91,26 @@ public class Main {
 
     public static void multi_player1_move() {
         System.out.print("Please choose field 1 to 9 to put 'X': ");
-        try {
-            step_player1 = new Scanner(System.in).nextInt();
-        } catch (java.util.InputMismatchException e) {
+        step_player1 = new Scanner(System.in).nextInt();
+        if (step_player1 > 0 && step_player1 < 10) {
+            makeMove(step_player1);
+            turn = "Player 2";
+        } else {
             System.out.println("Please make correct choice: 1 to 9.");
             multi_player1_move();
         }
-        if (step_player1 < 1 || step_player1 > 9) {
-            System.out.println("Please make correct choice: 1 to 9.");
-            multi_player1_move();
-        }
-        //ввод номера ячейки для вставки 'X'
-        makeMove(step_player1);//ход игрока №1
-        turn = "Player 2";
     }
 
     public static void multi_player2_move() {
         System.out.print("Please choose field 1 to 9 to put 'O': ");
-        try {
-            step_player2 = new Scanner(System.in).nextInt();
-        } catch (java.util.InputMismatchException e) {
+        step_player2 = new Scanner(System.in).nextInt();
+        if (step_player2 > 0 || step_player2 < 10) {
+            makeMove(step_player2);
+            turn = "Player 1";
+        } else {
             System.out.println("Please make correct choice: 1 to 9.");
             multi_player2_move();
         }
-        if (step_player2 < 1 || step_player2 > 9) {
-            System.out.println("Please make correct choice: 1 to 9.");
-            multi_player2_move();
-        }//ввод номера ячейки для вставки 'X'
-        makeMove(step_player2);//ход игрока №2
-        turn = "Player 1";
     }
 
     public static void fieldPrint() {
@@ -131,10 +133,10 @@ public class Main {
                 System.out.println("You chose game for two players.");
                 break;
             }
-            default: {
-                System.out.println("This option is unavailable. Please enter 1 or 2");
-                break;
-            }
+            //default: {
+            //    System.out.println("This option is unavailable. Please enter 1 or 2");
+            //    break;
+            //}
         }
     }
 
